@@ -1,0 +1,131 @@
+App Documentation: |
+    1. New Game
+    2. Choose difficulty
+    3. Add players
+
+
+Werewolf Replacement:
+- Strigoi
+- Reptillian
+- Vampire
+- Nosferatu
+- All of them lol
+
+Pros:
+- No need to check everyone's card
+- Balanced, fair roles
+- Starting clue for the VILLAGERS
+- Cards have text (Wow!) (and even peasants have text to help with bluffing)
+- Many roles!
+
+Scoring points:
+- If the townsfolk win, each alive townsfolk gets a number of points equal to the alive townsfolk. Each dead townsfolk gets the same amount -1.
+- If the Werewolves win, each alive member gets a number of points equal to the dead townsfolk. Each dead member gets the same amount -1.
+- If the Madman wins, they get a number of points equal to the number of players.
+
+Setup:
+- Show the werewolves 3 unused roles they can pretend to be
+- Point the Evils to the Werewolves
+- Give players a piece of information
+
+
+Tips:
+- Never reveal your card unless the text specifically says "reveal your card"!
+- Hanged? Killed at day? Hmm they different?
+
+
+Evil Roles:
+- Alpha (10+): You have veto on who to kill at night. When you die, reveal your card.
+- Werewolf
+- Cultist (10+): (You are on the WEREWOLVES team, but NOT a WEREWOLF. If WEREWOLVES win, you win!)
+- Hazer (11+)
+- Silencer (12+)
+
+Special Setup Roles:
+- Philosopher: At game start, you get to pick a different role from 3 options given by the narrator
+- Exorcist (12+): At game start, the narrator chooses a werewolf. They must keep their eyes closed as long as you are alive. The narrator announces there's an Exorcist
+- Copycat (12+): You have the same role as the closest Nightly role to your right. The narrator announces there are 2 of that role. You open your eyes at the same time.
+
+Setup Roles:
+- Blind Inspector (9+): At game start, pick a player. If they are Evil, a Setup Role or a Nightly Role , the narrator nods.
+- Fortune Teller (10+): At game start, the narrator points to 3 random players, at least one of which is a Evil
+- Rivals (11+): You know your rival. If your rival is dead, and the werewolves would eat you, they choose a different victim
+- ($) Explorer: At game start, the Explorer sees the unused cards
+
+Nightly Roles:
+- Town Guard: every night, protects someone from being killed
+- Seer: If nobody was hanged, inspect someone for being a Werewolf
+- Assassin: Can kill someone
+- Priest: Can save someone
+
+Secret Nightly Roles:
+- Hazer: Every night, point in a direction. The closest alive non-Werewolf has their ability negated or gets wrong info
+- Silencer: Once per game, at night, raise your hand. Nightly roles can't activate this night
+- Schizophrenic: Every night, the narrator secretly rolls a die. If they roll 6, you die
+    Note: To keep the game fast, instead of a die, the narrator may look at the time. If the minutes are divisible by 6, the Schizophrenic dies.
+- Bitten: When the werewolves open their eyes, make a ROCK sign with your hand. You become a Werewolf. You may open your eyes.
+- Bell Ringer: Once per game, when werewolves open eyes (keep yours closed), make a THUMBS UP sign. The following day, dead people can vote.
+
+Regular Roles:
+- Butler: You must always vote the same as the closest alive person to your right
+
+- Inquisitor (12+): Reveal your card. Secretly ask the narrator a yes/no question about one player. You secretly get a correct reply
+- Mayor (10+): Can choose to reveal himself. From then on, his vote counts as 2 votes
+- Witch Hunter (10+): Once per game, declare you're the Witch Hunter and say you want to kill someone. If their role name contains the letter L, they die immediately.
+    Note: you can bluff if you're a werewolf and nothing happens
+- Gangster: Once per game, when voting, reveal your card and veto for or against the current vote
+- Thief: Once per game, reveal your card and choose another player. Both get a new card
+
+- Crusader (10+): If you are hanged, reveal your card. You don't die. The person who most vehemently argued to hang you dies instead.
+
+- Scapegoat (10+): If either of your neighbors are alive, you can't die at night
+- Wrestler (8+): You can't be killed by the werewolves
+- Cat (10+): You have 2 lives. If you die, you revive next day
+- Celebrity: When you die, you take another role from the deck and keep playing
+
+- Archaeologist: If you win and are alive, you get double points [Only if playing with points]
+- Fool: You are immune to other non-werewolf players' effects. If they would get information about you, they get wrong information
+- Sad poet: In the morning, if someone died last night, you can reveal your card, die, and that person is resurrected
+
+- Star Child (12+): If you would be eaten at night and there exists an alive non-Werewolf Evil player, that player is eaten instead.
+- Saint (10+): If killed at day, the team loses
+- Hunter: When he dies, he chooses a player to die
+- Skinny Kid: If the WEREWOLVES kill you at night, the next night, the WEREWOLVES can kill 2 people
+- Grandma (10+): If you get killed by the werewolves, you become a werewolf
+- ($) Spiritualist: If the Spiritualist is alive and in the game, when a player dies, the players can (together) ask him/her ONE question and they can answer only with YES or NO
+
+Chaos Roles [Recommended - Only 1 of these per game]:
+- Madman: Your goal is to get killed by the villagers, but NOT by the WEREWOLVES. If you succeed, both the WEREWOLVES and the VILLAGERS lose and you win!
+- Alien: You are not on any team. If you get eaten by werewolves, you win, and reveal your card. The game goes on.
+- Diva: When you would die at night, a random player dies instead. If you would be hanged, both you and another random player die.
+
+Mechanics:
+- Vote / When voting / When voted
+- Death / When dying / When eaten / When hung / When someone else dies
+- Immunity
+- Declare / Reveal
+- Position
+- Voice
+- Name
+
+
+
+
+
+Mods:
+- No condition (x3)
+- Thick Mist (Secretly pick another Condition. The players don't know what it is, if possible.)
+- Alcohol (At game start, the narrator chooses a player to be drunk. They get a role card, but their powers secretly have no effect and get fake information)
+- Blood Moon (If the villagers choose to kill nobody, a random player dies).
+- Conspiracy (At game start, the narrator gives 2 pieces of knowledge, but one is false)
+- Dark Times (When a hanging ties, all tied players die.)
+- Tyranny (Either 2 or no players can be hanged every day)
+- Good Harvest (At game start, 2 random players get 2 cards instead of 1. Both apply. If either card is Evil, they're Evil).
+- Flame of Protection (Every morning, pass the flame to another player who never had the flame. If you have the flame, you can't die). The Flame goes away once everyone had it once.
+
+Knowledge:
+- (3 Werewolves+) At least 2 werewolves are sitting next to eachother
+- (3 Werewolves+) None of the werewolves are sitting next to eachother
+- At least 1 werewolf has long hair
+- At least 1 werewolf has the color X on them
+- At least 1 werewolf is wearing colorful/black and white clothes

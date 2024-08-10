@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>OpenAI Email App</title>
+
+    <link rel="stylesheet" href="css/base-style.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/modal.css">
+    
+    <script defer src="js/database.js"></script>
+    <script defer src="js/scripts.js"></script>
+    <script defer src="js/state.js"></script>
+    <script defer src="js/index.js"></script>
+    <script defer src="js/lib/utils.js"></script>
+  </head>
+
+  <style>
+    :root {
+      --font-size: 8vw;
+    }
+    #Window {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 3vh;
+      margin: auto;
+      padding: 2vw;
+      
+      font-size: var(--font-size);
+      text-align: center;
+    }
+    select, button {
+      font-size: var(--font-size);
+    }
+    #Sort-Wrapper {
+      display: flex;
+      flex-direction: row;
+    }
+    #Roles-Wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 1vh;
+    }
+    .role-wrapper {
+      display: flex;
+      gap: 4vw;
+    }
+
+    .image-wrapper {
+      height: 100%;
+    }
+    .image-wrapper img {
+      width: var(--font-size);
+    }
+
+
+    .role {
+    }
+    .name-input {
+      min-width: 25vw;
+      font-size: var(--font-size);
+    }
+    .role-townsfolk {}
+    .role-outsiders {
+      color: rgb(0, 110, 255);
+    }
+    .role-minions {
+      color: orange;
+    }
+    .role-demons {
+      color: red;
+    }
+
+    .separator {
+      padding-top: 1vh;
+      padding-bottom: 1vh;
+      border-bottom: solid gray 1vh;
+    }
+    
+  </style>
+
+  <body>
+
+    <div class="modal" onclick="index.closeModal()" style="display: none">
+      <div class="modal-content">
+
+      </div>
+    </div>
+
+    <div id="Window">
+      <div id="Top-Wrapper">
+        <button onclick="index.generateRoles()">Generate</button>
+        <button onclick="index.loadSavedRoles()">Load Saved Roles</button>
+
+        <select id="N-Players-Select">
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+          <option value="11" selected>11</option>
+          <option value="12">12</option>
+          <option value="13">13</option>
+          <option value="14">14</option>
+          <option value="15">15</option>
+        </select>
+      </div>
+
+      <div id="Sort-Wrapper" style="display: none;">
+        <button onclick="index.sortBySetup()">Sort By Setup</button>
+        <button onclick="index.sortByNightly()">Sort By Nightly</button>
+      </div>
+
+      <div id="Roles-Wrapper">
+
+      </div>
+
+      <button onclick="index.showImpRoles()">Show Imp Roles</button>
+
+      
+    </div>
+
+
+
+  </body>
+</html>
