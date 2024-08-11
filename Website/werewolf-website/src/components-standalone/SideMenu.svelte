@@ -43,8 +43,7 @@
 
         transition: 0.5s;
         
-        background-color: black;
-        color: white;
+        background-color: white;
     }
 
     .side-menu--open {
@@ -91,7 +90,7 @@
 <!-- svelte-ignore missing-declaration -->
 <div class="{sideMenuWrapperClass}" on:click={closeSideMenu}>
     <div class="{blackOverlayClass}"></div>
-    <div class="{sideMenuClass}" on:click={evt => evt.stopPropagation()}>
+    <div class="{sideMenuClass} shadowed" on:click={evt => evt.stopPropagation()}>
         <slot></slot>
     </div>
 </div>

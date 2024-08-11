@@ -1,7 +1,8 @@
 
 <style>
     :root {
-        --contact-header-height: max(min(75px, 12vw), 40px);
+        /* --contact-header-height: max(min(5rem, 12vw), 40px); */
+        --contact-header-height: 3.25rem;
         --card-aspect-ratio: 756/1093;
     }
     .contact {
@@ -32,6 +33,13 @@
 
         margin-top: calc(-0.35 * var(--contact-header-height));
         margin-left: calc(-0.35 * var(--contact-header-height));
+    }
+    .contact .picture-wrapper img.center {
+        height: calc(1.2 * var(--contact-header-height));
+        width: calc(1.2 * var(--contact-header-height));
+
+        margin-top: calc(0 * var(--contact-header-height));
+        margin-left: calc(-0.1 * var(--contact-header-height));
     }
 
 
@@ -84,23 +92,36 @@
 
 
 
-<div class="contact shadowed rounded" key={key}>
+<div class="contact shadowed rounded">
     <div class="header">
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
+        <!-- svelte-ignore a11y-no-static-element-interactions -->
         <div class="picture-wrapper" on:click={onPortraitClick}>
             <!-- svelte-ignore a11y-missing-attribute -->
-            <img src={state.name == null? 'Add.png' : `images/cards/${state.name}.png`}/>
+            <img
+                src={state.name == null? 'images/user.png' : `images/cards/${state.name}.png`}
+                class="{isPortraitCentered == true? 'center': ''}"
+            />
         </div>
         <div class="right-wrapper">
-            <div class="half upper-half" on:click={onPortraitClick}>
-                <b>{state.name == null? 'Click to set role!' : state.name}</b>
-            </div>
-            <div class="half lower-half">
+            {#if state.name != null}
+                <div class="half upper-half" on:click={onNameClick}>
+                    <b>{state.name == null? '' : state.name}</b>
+                </div>
+                <div class="half lower-half">
+                    {#if state.isEditMode}
+                        <input class="subtitle-input" on:change={onInputDone} bind:value={_subtitleInputValue} bind:this={domInput}>
+                    {:else}
+                        <span class="subtitle">{state.subtitle}</span>
+                    {/if}
+                </div>
+            {:else}
                 {#if state.isEditMode}
                     <input class="subtitle-input" on:change={onInputDone} bind:value={_subtitleInputValue} bind:this={domInput}>
                 {:else}
-                    <span class="subtitle">{state.subtitle}</span>
+                    <span class="subtitle" on:click={toggleContent}>{state.subtitle}</span>
                 {/if}
-            </div>
+            {/if}
 
             <!-- svelte-ignore a11y-no-static-element-interactions -->
             <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -108,7 +129,7 @@
                 V
             </div> -->
             <div class="badges">
-
+                
             </div>
         </div>
     </div>
@@ -122,14 +143,15 @@
 
 <script>
 
-    import { onMount } from 'svelte'
+    import { createEventDispatcher, onMount } from 'svelte'
     import { contactsStore } from '../stores/contacts-store';
     import { get } from 'svelte/store'
 
+    const dispatch = createEventDispatcher()
+
     export let state
     export let setState
-    export let onChangeRoleClick
-    export let key
+    export let isPortraitCentered = false
 
     let _subtitleInputValue
     let domInput
@@ -156,12 +178,19 @@
     function onInputDone() {
         setState({ ...state, subtitle: _subtitleInputValue, isEditMode: false })
     }
-    function onPortraitClick() {
+    function onNameClick() {
         if (state.name == null) {
-            onChangeRoleClick()
+            dispatch('change-role')
             return
         }
         toggleContent()
+    }
+    function onPortraitClick() {
+        if (state.name == null) {
+            dispatch('change-role')
+            return
+        }
+        dispatch('show-portrait')
     }
 
 

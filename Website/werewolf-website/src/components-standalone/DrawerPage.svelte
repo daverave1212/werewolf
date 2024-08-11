@@ -7,7 +7,7 @@
         top: 0;
         left: 0;
 
-        z-index: 99999 !important;
+        z-index: 484 !important;
         overflow-x: hidden;
         overflow-y: scroll;
 

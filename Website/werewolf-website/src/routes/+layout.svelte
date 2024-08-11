@@ -2,8 +2,31 @@
     import { SaraProvider } from "saraui";
     import "../app.css";
     import '../utils.css'
+    import Nav from "../components-standalone/Nav.svelte";
+    import MobileBurgerButton from "../components-standalone/MobileBurgerButton.svelte";
+    import { fly } from "svelte/transition";
+
+    let isBurgerOpen = false
+
+
+    // Required for transition animations between pages
+    export let data
 </script>
 
-<SaraProvider>
-    <slot></slot>
-</SaraProvider>
+
+
+<Nav
+    options={[
+        { name: 'Play', href:"/new-game"},
+        { name: 'Tutorial', href:"/"},
+    ]}
+    isBurgerOpen={isBurgerOpen} setIsBurgerOpen={bool => isBurgerOpen = bool}
+>
+    <MobileBurgerButton src="images/burger.svg" onClick={() => isBurgerOpen = true}></MobileBurgerButton>
+</Nav>
+
+{#key data.url}
+    <div in:fly={{x: 200, duration: 300, delay: 300}} out:fly={{x: -200, duration: 300}}>
+        <slot></slot>
+    </div>
+{/key}

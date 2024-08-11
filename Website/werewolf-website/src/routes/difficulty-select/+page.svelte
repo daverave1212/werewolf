@@ -1,39 +1,7 @@
 <style>
-    :root {
-        --menu-selected-color: rgb(186, 160, 255);
-    }
+    
     .page {
         text-align: center;
-    }
-    .cards {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        grid-gap: 5%;
-        grid-row-gap: 5vw;
-    }
-    .card {
-        width: 100%;
-        height: 100%;
-
-        padding: 1rem;
-
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        
-        gap: 1rem;
-        padding-top: 1rem;
-        padding-bottom: 1rem;
-
-        background-color: white;
-        transition: 0.25s;
-    }
-    .colorful {
-        background-color: var(--menu-selected-color);
-    }
-    .card p {
-        font-size: 0.8rem;
     }
 
     .image-wrapper {
@@ -134,10 +102,7 @@
     roleStates={availableDrawerRoles} setRoleStates={() => {}}
     onClickOnRole={() => isRolesDrawerOpen = false}
 />
-<div class="page">
-    <br>
-    <br>
-    <br>
+<div class="page space-top">
     <h2>Choose Game Difficulty</h2>
     <br>
     <p>Each game difficulty contains about 10 extra roles. The more advanced the difficulty, the more complex player choices will be!</p>
@@ -174,10 +139,13 @@
     
     <br>
     <br>
-    <button
-        style="width: 60%"
-        class="btn big {selectedModName == null || selectedDifficultyName == null? 'gray': 'colorful'}"
-    >
-        <a href="/">Start</a>
-    </button>
+    <div class="flex-content center">
+        <a  class="btn big colorful" href="add-players">Back</a>
+        <a  style="width: 45vw"
+            class="btn big {selectedModName == null || selectedDifficultyName == null? 'gray': 'colorful'}"
+            href="/players"
+        >
+            Start
+        </a>
+    </div>
 </div>
