@@ -39,7 +39,7 @@
         top: 0;
         left: calc(-1 * var(--width));
         
-        z-index: 99990 !important;
+        z-index: 514 !important;
 
         transition: 0.5s;
         

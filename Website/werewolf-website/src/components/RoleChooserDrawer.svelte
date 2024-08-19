@@ -12,7 +12,7 @@
         padding-bottom: 2vh;
 
         display: grid;
-        grid-template-columns: auto auto auto;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
         grid-row-gap: 6vw;
     }
     .role-box {
@@ -33,11 +33,13 @@
     import DrawerPage from "../components-standalone/DrawerPage.svelte";
     import RoundCardPortrait from "./RoundCardPortrait.svelte";
     import { randomInt } from "../lib/utils";
+    import RoleCard from "./RoleCard.svelte";
+    import RoleList from "./RoleList.svelte";
 
     export let roleStates
     export let isOpen
-
     export let onClickOnRole
+    export let onClickOutside
 
     function onPortraitClick(i) {
         if (roleStates[i].isValid == false) {
@@ -47,44 +49,38 @@
     }
 </script>
 
-<DrawerPage isOpen={isOpen}>
-<!-- {#if extraRoleStates != null} -->
-    <div class="center-content center-text padded">
-        <br>
+<DrawerPage isOpen={isOpen} on:click={evt => onClickOutside()}>
+    <!-- <div class="center-content center-text padded">
+        
         <h2>Roles in this game</h2>
         <br>
         <p>These are all the roles automatically selected to be in this game.</p>
-    </div>
-<!-- {/if} -->
-    <div class="role-chooser-content">
+    </div> -->
 
+    <br>
+    <slot name="top"></slot>
+
+
+    <RoleList>
         {#each roleStates.keys() as i}
             {#if roleStates[i].isInGame != false}
-                <div class="role-box center-content" on:click={(evt) => onPortraitClick(i)}>
-                    <RoundCardPortrait name={roleStates[i].name} isValid={roleStates[i].isValid == false ? false : true}/>
-                    <div class={roleStates[i].isValid == false ? 'title gray-text strikethrough' : 'title'}>{roleStates[i].name}</div>
-                </div>
+                <RoleCard name={roleStates[i].name} on:role-click={(evt) => onPortraitClick(i)} isValid={roleStates[i].isValid}/>
             {/if}
         {/each}
+    </RoleList>
 
-    </div>
+    <slot name="middle"></slot>
 
-    <div class="center-content center-text padded">
-        <h2>Roles not in game</h2>
-        <br>
-        <p>These roles are NOT in the game (Strigoy can bluff as them, Philosopher gets one of them, etc).</p>
-    </div>
+    <!--  -->
 
-    <div class="role-chooser-content">
-
+    <RoleList>
         {#each roleStates.keys() as i}
             {#if roleStates[i].isInGame == false}
-                <div class="role-box center-content" on:click={(evt) => onPortraitClick(i)}>
-                    <RoundCardPortrait name={roleStates[i].name} isValid={roleStates[i].isValid == false ? false : true}/>
-                    <div class={roleStates[i].isValid == false ? 'title gray-text strikethrough' : 'title'}>{roleStates[i].name}</div>
-                </div>
+                <RoleCard name={roleStates[i].name} on:role-click={(evt) => onPortraitClick(i)} isValid={roleStates[i].isValid}/>
             {/if}
         {/each}
+    </RoleList>
+    
 
-    </div>
+    <slot name="bottom"></slot>
 </DrawerPage>

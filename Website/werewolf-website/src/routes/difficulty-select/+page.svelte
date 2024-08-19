@@ -22,44 +22,13 @@
 <script>
     import RoleChooserDrawer from "../../components/RoleChooserDrawer.svelte";
     import RoundCardPortrait from "../../components/RoundCardPortrait.svelte";
-    import { BEGINNER, getRolesByDifficulty, INTERMEDIATE } from "../../lib/Database";
+    import { getRolesByDifficulty } from "../../lib/Database";
+    import { difficulties, selectedDifficulty } from '../../stores/difficulty-store'
+    import { mods, selectedModOption } from "../../stores/mods-store";
 
-    const difficulties = [
-        {
-            name: 'Kids',
-            difficulty: BEGINNER,
-            imageName: 'Peasant',
-            description: 'Contains only Werewolves, Peasants and a Saint.'
-        },
-        {
-            name: 'Beginner',
-            difficulty: BEGINNER,
-            imageName: 'Werewolf',
-            description: 'Cointains some simple townsfolk roles and a Cultist Evil helper role.'
-        },
-        {
-            name: 'Intermediate',
-            difficulty: INTERMEDIATE,
-            imageName: 'Seer',
-            description: 'Contains a few more standard townsfolk roles and an extra Evil role.'
-        },
-        {
-            name: 'Advanced',
-            difficulty: INTERMEDIATE,
-            imageName: 'Granny',
-            description: 'Contains all essential good and evil roles, some chaos roles, and more!'
-        },
-        {
-            name: 'Complete',
-            difficulty: INTERMEDIATE,
-            imageName: 'Fool',
-            description: 'Contains all 40+ roles in the game! Some of them may be unbalanced, though.'
-        }
-    ]
 
     let isRolesDrawerOpen = false
     let availableDrawerRoles = []
-    let selectedDifficultyName
 
     function openDrawerWithDifficultyRoles(difficulty) {
         availableDrawerRoles = getRolesByDifficulty(difficulty)
@@ -67,40 +36,22 @@
     }
     
     function onClickOnDifficulty(difficulty) {
-        if (selectedDifficultyName == difficulty.name) {
+        if ($selectedDifficulty.name == difficulty.name) {
             openDrawerWithDifficultyRoles(difficulty.difficulty)
             return
         }
-        selectedDifficultyName = difficulty.name
+        $selectedDifficulty = difficulty
     }
 
-
-
-
-
-    const mods = [
-        {
-            name: 'No Mods',
-            imageName: 'MOD No Mod',
-            description: 'Standard game play, no fancy rules.'
-        },{
-            name: 'Mods!',
-            imageName: 'MOD Conspiracy',
-            description: 'Each game will have an extra mod!'
-        }
-    ]
-    let selectedModName
-    function onClickOnMod(mod) {
-        selectedModName = mod.name
-    }
 
 </script>
 
 
 <RoleChooserDrawer
-    isOpen={isRolesDrawerOpen} setIsOpen={(value) => isRolesDrawerOpen = value}
-    roleStates={availableDrawerRoles} setRoleStates={() => {}}
+    isOpen={isRolesDrawerOpen}
+    roleStates={availableDrawerRoles}
     onClickOnRole={() => isRolesDrawerOpen = false}
+    onClickOutside={() => isRolesDrawerOpen = false}
 />
 <div class="page space-top">
     <h2>Choose Game Difficulty</h2>
@@ -110,7 +61,7 @@
 
     <div class="cards">
         {#each difficulties as difficulty}
-            <div class="card shadowed rounded {selectedDifficultyName == difficulty.name? 'colorful' : ''}" on:click={() => onClickOnDifficulty(difficulty)}>
+            <div class="card shadowed rounded {$selectedDifficulty.name == difficulty.name? 'colorful' : ''}" on:click={() => onClickOnDifficulty(difficulty)}>
                 <RoundCardPortrait name={difficulty.imageName} isValid={true}/>
                 <h3>{difficulty.name}</h3>
                 <p>{difficulty.description}</p>
@@ -128,7 +79,7 @@
 
     <div class="cards">
         {#each mods as mod}
-            <div class="card shadowed rounded {selectedModName == mod.name? 'colorful' : ''}" on:click={() => onClickOnMod(mod)}>
+            <div class="card shadowed rounded {$selectedModOption == mod.name? 'colorful' : ''}" on:click={() => $selectedModOption = mod.name}>
                 <RoundCardPortrait name={mod.imageName} isValid={true}/>
                 <h3>{mod.name}</h3>
                 <p>{mod.description}</p>
@@ -142,10 +93,10 @@
     <div class="flex-content center">
         <a  class="btn big colorful" href="add-players">Back</a>
         <a  style="width: 45vw"
-            class="btn big {selectedModName == null || selectedDifficultyName == null? 'gray': 'colorful'}"
-            href="/players"
+            class="btn big {$selectedDifficulty == null || $selectedModOption == null? 'gray': 'colorful'}"
+            href="/roles"
         >
-            Start
+            Next
         </a>
     </div>
 </div>

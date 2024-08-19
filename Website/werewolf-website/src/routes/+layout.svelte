@@ -2,15 +2,29 @@
     import { SaraProvider } from "saraui";
     import "../app.css";
     import '../utils.css'
+    import '../card-png.css'
+    import { navigating } from '$app/stores'
     import Nav from "../components-standalone/Nav.svelte";
     import MobileBurgerButton from "../components-standalone/MobileBurgerButton.svelte";
     import { fly } from "svelte/transition";
+    import { onMount } from "svelte";
+    import { addedPlayers } from "../stores/added-players-store";
+    import { selectedDifficulty } from "../stores/difficulty-store";
 
     let isBurgerOpen = false
+
+    navigating.subscribe(nav => {
+        // console.log(`Navigating. Added players:`)
+        // console.log($addedPlayers)
+    })
 
 
     // Required for transition animations between pages
     export let data
+    $: {
+        // console.log(`Data changed.`)
+        // console.log({data})
+    }
 </script>
 
 
@@ -19,6 +33,7 @@
     options={[
         { name: 'Play', href:"/new-game"},
         { name: 'Tutorial', href:"/"},
+        { name: 'Print', href:"/card"}
     ]}
     isBurgerOpen={isBurgerOpen} setIsBurgerOpen={bool => isBurgerOpen = bool}
 >

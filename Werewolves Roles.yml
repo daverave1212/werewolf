@@ -1,7 +1,5 @@
-App Documentation: |
-    1. New Game
-    2. Choose difficulty
-    3. Add players
+TODO:
+- Wake up vs open eyes
 
 
 Werewolf Replacement:
@@ -32,25 +30,25 @@ Setup:
 Tips:
 - Never reveal your card unless the text specifically says "reveal your card"!
 - Hanged? Killed at day? Hmm they different?
+- Note that Strigoys also benefit from other people telling their role!
 
 
 Evil Roles:
-- Alpha (10+): You have veto on who to kill at night. When you die, reveal your card.
-- Werewolf
-- Cultist (10+): (You are on the WEREWOLVES team, but NOT a WEREWOLF. If WEREWOLVES win, you win!)
+- Moroy: You are a Strigoy. When you die, reveal your card.
+- Strigoy
+- Cultist: (You are on the WEREWOLVES team, but NOT a WEREWOLF. If WEREWOLVES win, you win!)
 - Hazer (11+)
 - Silencer (12+)
 
 Special Setup Roles:
 - Philosopher: At game start, you get to pick a different role from 3 options given by the narrator
-- Exorcist (12+): At game start, the narrator chooses a werewolf. They must keep their eyes closed as long as you are alive. The narrator announces there's an Exorcist
-- Copycat (12+): You have the same role as the closest Nightly role to your right. The narrator announces there are 2 of that role. You open your eyes at the same time.
+- Lover: At game start (when all eyes closed), grab somone by hand. You become lovers. When one of you dies, the other dies too.
 
 Setup Roles:
 - Blind Inspector (9+): At game start, pick a player. If they are Evil, a Setup Role or a Nightly Role , the narrator nods.
 - Fortune Teller (10+): At game start, the narrator points to 3 random players, at least one of which is a Evil
-- Rivals (11+): You know your rival. If your rival is dead, and the werewolves would eat you, they choose a different victim
-- ($) Explorer: At game start, the Explorer sees the unused cards
+- ($) Rivals (11+): You know your rival. If your rival is dead, and the werewolves would eat you, they choose a different victim
+- ($) Rival: A game start, PUNCH the person to your left or right. You become rivals.
 
 Nightly Roles:
 - Town Guard: every night, protects someone from being killed
@@ -69,9 +67,9 @@ Secret Nightly Roles:
 Regular Roles:
 - Butler: You must always vote the same as the closest alive person to your right
 
-- Inquisitor (12+): Reveal your card. Secretly ask the narrator a yes/no question about one player. You secretly get a correct reply
-- Mayor (10+): Can choose to reveal himself. From then on, his vote counts as 2 votes
-- Witch Hunter (10+): Once per game, declare you're the Witch Hunter and say you want to kill someone. If their role name contains the letter L, they die immediately.
+- Inquisitor: Once per game, secretly ask the narrator a yes/no question about one player. You secretly get a correct reply.
+- Mayor: Can choose to reveal himself. From then on, his vote counts as 2 votes.
+- Witch Hunter: Once per game, declare you're the Witch Hunter and say you want to kill someone. If their role name contains the letter L, they die immediately.
     Note: you can bluff if you're a werewolf and nothing happens
 - Gangster: Once per game, when voting, reveal your card and veto for or against the current vote
 - Thief: Once per game, reveal your card and choose another player. Both get a new card
@@ -81,23 +79,26 @@ Regular Roles:
 - Scapegoat (10+): If either of your neighbors are alive, you can't die at night
 - Wrestler (8+): You can't be killed by the werewolves
 - Cat (10+): You have 2 lives. If you die, you revive next day
-- Celebrity: When you die, you take another role from the deck and keep playing
+- Bard: When you die, you take another role from the deck and keep playing
+- Diva: When you would die at night, a random player dies instead. If you would be hanged, both you and another random player die.
 
 - Archaeologist: If you win and are alive, you get double points [Only if playing with points]
 - Fool: You are immune to other non-werewolf players' effects. If they would get information about you, they get wrong information
 - Sad poet: In the morning, if someone died last night, you can reveal your card, die, and that person is resurrected
 
-- Star Child (12+): If you would be eaten at night and there exists an alive non-Werewolf Evil player, that player is eaten instead.
+- Star Child: If you would be eaten at night and there exists an alive non-Werewolf Evil player, that player is eaten instead.
 - Saint (10+): If killed at day, the team loses
 - Hunter: When he dies, he chooses a player to die
 - Skinny Kid: If the WEREWOLVES kill you at night, the next night, the WEREWOLVES can kill 2 people
 - Grandma (10+): If you get killed by the werewolves, you become a werewolf
-- ($) Spiritualist: If the Spiritualist is alive and in the game, when a player dies, the players can (together) ask him/her ONE question and they can answer only with YES or NO
+- Leper: If you die, the next Night happens TWICE.
+- Fallen Angel: When you die, reveal your card and flip a coin. On HEADS, a random Townsfolk is revived. On TAILS, a random Townsfolk dies.
+- Dove of Peace: When you die, nobody can be hanged the upcoming day.
 
 Chaos Roles [Recommended - Only 1 of these per game]:
 - Madman: Your goal is to get killed by the villagers, but NOT by the WEREWOLVES. If you succeed, both the WEREWOLVES and the VILLAGERS lose and you win!
 - Alien: You are not on any team. If you get eaten by werewolves, you win, and reveal your card. The game goes on.
-- Diva: When you would die at night, a random player dies instead. If you would be hanged, both you and another random player die.
+
 
 Mechanics:
 - Vote / When voting / When voted
@@ -107,6 +108,15 @@ Mechanics:
 - Position
 - Voice
 - Name
+- Next game
+- Being found is bad because:
+    - Strigoys can kill you
+    - Strigoys can know to ignore you
+    - Townsfolk can kill you (?)
+
+- Bonuses you can get:
+    - Information on Strigoy
+    - Invulnerability
 
 
 
@@ -114,16 +124,22 @@ Mechanics:
 
 Mods:
 - No condition (x3)
-- Thick Mist (Secretly pick another Condition. The players don't know what it is, if possible.)
-- Alcohol (At game start, the narrator chooses a player to be drunk. They get a role card, but their powers secretly have no effect and get fake information)
-- Blood Moon (If the villagers choose to kill nobody, a random player dies).
-- Conspiracy (At game start, the narrator gives 2 pieces of knowledge, but one is false)
-- Dark Times (When a hanging ties, all tied players die.)
-- Tyranny (Either 2 or no players can be hanged every day)
-- Good Harvest (At game start, 2 random players get 2 cards instead of 1. Both apply. If either card is Evil, they're Evil).
-- Flame of Protection (Every morning, pass the flame to another player who never had the flame. If you have the flame, you can't die). The Flame goes away once everyone had it once.
+- Thick Mist: Pick another Condition and keep it secret. The players don't know what it is, if possible (or until time comes to reveal it).
+- Alcohol: At game start, narrator secretly chooses a player to be drunk. They have a role card, but their abilities secretly have no effect and get fake or random information.
+- Blood Moon: Before giving roles, all Strigoy and a random townsfolk are replaced with other Evil roles. Evils know eachother but don't kill at night.
+- Conspiracy: At game start, the narrator gives 2 pieces of knowledge, but one is false
+- Dark Times: At least one player must be hanged every day before nightfall. [When selecting roles, replace the Seer with a different role]
+- Stress: Every day, either 2 people or 0 people die. There are 2 rounds of voting. [if players decide not to hang the 2nd person, nobody is hanged]
+- Burn The Witch: A majority is not needed to kill someone - The person with most votes every day is hanged.
+- Good Harvest: At game start, 2 random players get 2 cards instead of 1. Both apply. If either card is Evil, they're Evil
+- Torch of Protection: Every morning, pass the flame to another player who never had the flame. If you have the flame, you can't die). The Flame goes away once everyone had it once.
+- Winter Is Coming: Every day lasts exactly 4 minutes - 3 minutes for talking, and exactly 1 minute to resolve voting. [If players didn't have time to vote, better luck next day!]
+- Sunny Day: When someone dies, reveal their role.
+- Stolen Elections: Each dead person can vote once after they died (except the Mayor).
+- Evil Whispers: All Evils know who other Evils are on game start.
 
 Knowledge:
+- (If other Evils) The evil roles are exactly...
 - (3 Werewolves+) At least 2 werewolves are sitting next to eachother
 - (3 Werewolves+) None of the werewolves are sitting next to eachother
 - At least 1 werewolf has long hair

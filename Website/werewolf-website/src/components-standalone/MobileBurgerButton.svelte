@@ -1,5 +1,8 @@
 
 <style>
+    .burger-button {
+        z-index: 99999;
+    }
     @media (orientation: landscape) {
         .burger-button {
             display: none;

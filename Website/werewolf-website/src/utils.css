@@ -1,5 +1,6 @@
 .page {
     width: 100vw;
+    max-width: 100%;
     min-height: 100vh;
     padding: 1.25rem;
     padding-bottom: 10vh;
@@ -13,11 +14,18 @@
 .rounded {
     border-radius: 0.75rem;
 }
+.rounded-left {
+    border-top-left-radius: 0.75rem;
+    border-bottom-left-radius: 0.75rem;
+}
 .center-content {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+.center-text {
+    text-align: center;
 }
 .flex-content {
     display: flex;
@@ -30,11 +38,48 @@
 .flex-content.wrap {
     flex-wrap: wrap;
 }
+.flex-content.right, .flex-content.align-right {
+    justify-content: end;
+}
+.text-align-left {
+    width: 100%;
+    text-align: left;
+}
+
+.icon {
+    height: 1rem;
+    width: 1rem;
+}
+
 .padded {
     padding: 1.5rem;
 }
 .space-top {
     padding-top: 5rem;
+}
+.margin-top-half {
+    margin-top: 0.5rem;
+}
+.margin-top-1 {
+    margin-top: 1rem;
+}
+.margin-top-2 {
+    margin-top: 2rem;
+}
+.margin-top-4 {
+    margin-top: 4rem;
+}
+.margin-bottom-half {
+    margin-bottom: 0.5rem;
+}
+.margin-bottom-1 {
+    margin-bottom: 1rem;
+}
+.margin-bottom-2 {
+    margin-bottom: 2rem;
+}
+.margin-bottom-4 {
+    margin-bottom: 4rem;
 }
 .btn {
     border: none;
@@ -42,11 +87,14 @@
     border-radius: 0.5rem;
 
     padding: 0.5rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
 
     text-decoration: none;
     text-align: center;
+}
+.btn:disabled, .btn[disabled] {
+    background-color: gray !important;
 }
 .btn.red {
     background-color: rgb(250, 52, 52);

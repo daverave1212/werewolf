@@ -15,16 +15,21 @@ export const SETUP = 'setup'
 export const NIGHTLY = 'nightly'
 export const REGULAR = 'regular'
 
-// Each werewolf is worth 3.5 Villagers
-const getMinimumNWerewolves = (nPlayers) => Math.floor((nPlayers + 1) / 5)
+const isWorthBalanceAcceptable = worthBalanceFloat => worthBalanceFloat >= 0 && worthBalanceFloat <= 0.75
 
-export const WEREWOLF = 'Werewolf'
+export const WEREWOLF = 'Strigoy'
 export const EVIL = 'Any Evil'
 const evilsByPlayers = {
+    2:  [[WEREWOLF]],
+    3:  [[WEREWOLF]],
+    4:  [[WEREWOLF]],
+    5:  [[WEREWOLF]],
+    6:  [[WEREWOLF, EVIL]],
+    7:  [[WEREWOLF, EVIL]],
     8:  [[WEREWOLF, EVIL]],
-    9:  [[WEREWOLF, WEREWOLF]],
-    10: [[WEREWOLF, WEREWOLF],  [WEREWOLF, EVIL, EVIL]],
-    11: [[WEREWOLF, WEREWOLF, EVIL]],
+    9:  [[WEREWOLF, EVIL, EVIL]],                                 // Too negative
+    10: [[WEREWOLF, WEREWOLF],  [WEREWOLF, EVIL, EVIL]],        // Fine
+    11: [[WEREWOLF, WEREWOLF, EVIL]],                           // Way too negative
     12: [[WEREWOLF, WEREWOLF, EVIL]],
     13: [[WEREWOLF, WEREWOLF, EVIL, EVIL]],
     14: [[WEREWOLF, WEREWOLF, WEREWOLF],  [WEREWOLF, WEREWOLF, EVIL, EVIL]],
@@ -37,22 +42,29 @@ const evilsByPlayers = {
 }
 
 
-const Werewolf = {
-    name: "Werewolf",
-    isWerewolf: true,
-    nPlayers: 0,
+const Strigoy = {
+    name: "Strigoy",
     team: WEREWOLVES,
-    worth: -4,
-    category: NIGHTLY_WEREWOLVES,
-    difficulty: BEGINNER
+    isWerewolf: true,
+    nPlayers: 0,                        // Minimum number of players in game to have this role
+    worth: -4.5,                        // A heuristic for balancing
+    category: NIGHTLY_WEREWOLVES,       // Categorization
+    difficulty: BEGINNER,               // Role categories are split into difficulty categories
+    isImportant: false,                 // The game must contain at least a number of important roles
+    type: 'Nightly',
+    effect: 'Every night, wake up. All Strigoy, together, choose someone to kill.',
+    notes: 'On game start, all Strigoys wake up, and the narrator points to other Evils.',
+    narratorNotes: 'At game start, all Strigoys open their eyes. The narrator points to the other Evil players (if any).\nNobody is killed at game start. Strigoys will begin killing on first night.'
 }
 const Cultist = {
     name: "Cultist",
     nPlayers: 0,
     team: WEREWOLVES,
-    worth: -0.75,
+    worth: -1.5,
     category: REGULAR,
-    difficulty: BEGINNER
+    difficulty: BEGINNER,
+    effect: "You are Evil. You don't know who other Evils are.",
+    notes: 'You do NOT open your eyes. Strigoys know who you are.'
 }
 const Peasant = {
     name: "Peasant",
@@ -60,27 +72,35 @@ const Peasant = {
     team: TOWNSFOLK,
     worth: 1,
     difficulty: BEGINNER,
-    category: REGULAR
+    category: REGULAR,
+    effect: 'Every day, the Townsfolk can vote on who to hang. Work work!',
+    notes: 'There may be any number of Peasants in the game!'
 }
 export const getRoles = () => [
     {
-        name: "Alpha",
+        name: "Mora",
         isWerewolf: true,
         nPlayers: 10,
         team: WEREWOLVES,
-        worth: -3.5,
+        worth: -5,
         category: NIGHTLY_WEREWOLVES,
-        difficulty: COMPLETE
+        difficulty: COMPLETE,
+        type: 'Nightly',
+        effect: 'You are a Strigoy. When you die, reveal your card.'
     },
-    {...Werewolf},
+    {...Strigoy},
     {...Cultist},
     {
         name: "Hazer",
         nPlayers: 11,
         team: WEREWOLVES,
-        worth: -2,
+        worth: -1.75,
         category: NIGHTLY_WEREWOLVES,
-        difficulty: INTERMEDIATE
+        difficulty: INTERMEDIATE,
+        type: 'Special Nightly',
+        effect: 'Every night, when Strigoys open eyes, point left or right (keep your eyes closed)! The closest alive Townsfolk in that direction gets wrong information, or their ability does nothing.',
+        notes: 'You do NOT open your eyes.',
+        lineHeight: 31
     },
     {
         name: "Silencer",
@@ -88,33 +108,59 @@ export const getRoles = () => [
         team: WEREWOLVES,
         worth: -2,
         category: NIGHTLY_WEREWOLVES,
-        difficulty: ADVANCED
+        difficulty: ADVANCED,
+        effect: 'Once per game, when Strigoys open eyes (keep yours closed!), raise your arm. ALL Townsfolk abilities have no effect until next night. Narrator announces that "everyone is silenced".',
+        notes: 'You do NOT open your eyes.',
+        narratorNotes: 'Pay attention to the Silencer\'s arm sign. When they raise their arm, announce that the Silencer silenced everyone, and nobody\'s role does anything until the start of next night.',
+        lineHeight: 31
     },
-
-
+    {
+        name: "Yaga (Priest)",
+        nPlayers: 12,
+        team: WEREWOLVES,
+        worth: -3.5,
+        category: NIGHTLY_WEREWOLVES,
+        difficulty: COMPLETE,
+        isSpecial: true,
+        yagaRole: 'Priest',
+        effect: 'You pretend to be a Priest. There is no other Priest in game.',
+        notes: 'You don\'t actually have any powers. Just pretend you do.',
+        narratorNotes: 'As the narrator, do say "Priest, wake up". Continue with the normal routine, but Yaga can\'t actually save anyone.',
+        type: 'Nightly',
+    },
+    {
+        name: "Yaga (Town Guard)",
+        nPlayers: 12,
+        team: WEREWOLVES,
+        worth: -3.5,
+        category: NIGHTLY_WEREWOLVES,
+        difficulty: COMPLETE,
+        isSpecial: true,
+        yagaRole: 'Town Guard',
+        effect: 'You pretend to be a Town Guard. There is no other Town Guard in game.',
+        notes: 'You don\'t actually have any powers. Just pretend you do.',
+        narratorNotes: 'As the narrator, do say "Town Guard, wake up". Continue with the normal routine, but Yaga can\'t actually protect anyone.',
+        type: 'Nightly',
+    },
     {
         name: "Philosopher",
         nPlayers: 0,
         team: TOWNSFOLK,
         worth: 1,
         category: SPECIAL_SETUP,
-        difficulty: INTERMEDIATE
+        difficulty: INTERMEDIATE,
+        effect: 'When you get your role card, pick a different role from 3 unused options (could be a Strigoy)!',
+        narratorNotes: 'Draw 3 role cards from the unused roles (randomly, or as you like) and let the Philosopher pick one. Make sure you change the Philosopher\'s role on the app.'
+
     },
     {
-        name: "Exorcist",
+        name: "Fallen Angel",
         nPlayers: 0,
         team: TOWNSFOLK,
-        worth: 1.5,
+        worth: 1,
         category: SPECIAL_SETUP,
-        difficulty: COMPLETE
-    },
-    {
-        name: "Copycat",
-        nPlayers: 0,
-        team: TOWNSFOLK,
-        worth: 1.75,
-        category: SPECIAL_SETUP,
-        difficulty: COMPLETE
+        difficulty: COMPLETE,
+        effect: "When you die, reveal your card and flip a coin. On HEADS, a random Townsfolk is revived. On TAILS, a random Townsfolk dies.",
     },
 
     {
@@ -123,7 +169,11 @@ export const getRoles = () => [
         team: TOWNSFOLK,
         worth: 1.5,
         category: SETUP,
-        difficulty: INTERMEDIATE
+        difficulty: INTERMEDIATE,
+        isImportant: true,
+        effect: 'At game start, pick 2 players. For each, if its role contains letter "O", the narrator nods.',
+        narratorNotes: 'The Blind Inspector opens their eyes. First, they point to one player, then you may nod. Then they point to another player, and you may nod again.',
+        type: 'Nightly'
     },
     {
         name: "Fortune Teller",
@@ -131,42 +181,43 @@ export const getRoles = () => [
         team: TOWNSFOLK,
         worth: 1.75,
         category: SETUP,
-        difficulty: BEGINNER
-    },
-    {
-        name: "Rival",
-        nPlayers: 11,
-        team: TOWNSFOLK,
-        worth: 1,
-        category: SETUP,
-        difficulty: ADVANCED,
-        isSpecial: true
+        difficulty: BEGINNER,
+        isImportant: true,
+        effect: 'At game start, the narrator points at 3 players. At least one of them is Evil.',
+        narratorNotes: 'The Fortune Teller opens their eyes.'
     },
     {
         name: "Lover",
         nPlayers: 10,
         team: TOWNSFOLK,
-        worth: 0.75,
+        worth: 0.5,
         category: SETUP,
         difficulty: INTERMEDIATE,
-        isSpecial: true
+        effect: 'At game start (when everyone closes eyes), grab somone by hand. You become lovers. When one of you dies, the other dies too.',
+        notes: 'Make sure you let go of their hand when Strigoys open eyes!',
+        narratorNotes: 'If you have this role in game, make sure the players know that they may get grabbed by hand.'
     },
-
     {
         name: "Seer",
         nPlayers: 0,
         team: TOWNSFOLK,
-        worth: 1.75,
+        worth: 1.5,
         category: NIGHTLY,
-        difficulty: INTERMEDIATE
+        difficulty: INTERMEDIATE,
+        isImportant: true,
+        effect: 'Every night, if nobody was hung last day, wake up.\nChoose a player. The narrator nods if they are a Strigoy.',
+        notes: 'Wait for the narrator to tell you to open eyes.'
     },
     {
         name: "Town Guard",
         nPlayers: 0,
         team: TOWNSFOLK,
-        worth: 1.75,
+        worth: 1.5,
         category: NIGHTLY,
-        difficulty: BEGINNER
+        difficulty: BEGINNER,
+        isImportant: true,
+        effect: 'Every night, wake up and pick a player (not yourself). They can\'t die this night. You can\'t pick the same player two nights in a row.',
+        notes: 'If they would die, nothing happens.'
     },
     {
         name: "Assassin",
@@ -174,7 +225,10 @@ export const getRoles = () => [
         team: TOWNSFOLK,
         worth: 1.25,
         category: NIGHTLY,
-        difficulty: INTERMEDIATE
+        difficulty: INTERMEDIATE,
+        effect: 'Once per game, after Strigoys close eyes, raise your arm if you want to wake up.\nThen kill someone.',
+        notes: 'Wait for the narrator to say "Assassin wake up."',
+        narratorNotes: 'Watch out for the Assassin. If their arm is raised, say "Assassin, wake up".\nThey can only do this once per game.'
     },
     {
         name: "Priest",
@@ -182,7 +236,9 @@ export const getRoles = () => [
         team: TOWNSFOLK,
         worth: 1.75,
         category: NIGHTLY,
-        difficulty: INTERMEDIATE
+        difficulty: INTERMEDIATE,
+        isImportant: true,
+        effect: 'Every night, wake up. You know who died. Once per game, you can revive one player who just died (except yourself).',
     },
     {
         name: "Schizophrenic",
@@ -190,24 +246,31 @@ export const getRoles = () => [
         team: TOWNSFOLK,
         worth: 0.75,
         category: NIGHTLY,
-        difficulty: ADVANCED
+        difficulty: ADVANCED,
+        effect: 'Every night, the narrator secretly rolls a die.\nIf they roll 6, you get a heart attack and die (you know in the morning if you died).',
+        notes: 'You don\'t necessarily know how you died...',
+        narratorNotes: 'Alternatively, instead of rolling a die, look at the time. If the minutes are divisible by 6, the Schizophrenic dies.'
     },
 
     {
         name: "Butler",
         nPlayers: 0,
         team: TOWNSFOLK,
-        worth: 1,
+        worth: 0.75,
         category: REGULAR,
-        difficulty: INTERMEDIATE
+        difficulty: INTERMEDIATE,
+        effect: 'You must always vote the same as the closest alive person to your right.',
+        notes: 'If they don\'t vote, you don\'t vote'
     },
     {
         name: "Inquisitor",
         nPlayers: 12,
         team: TOWNSFOLK,
-        worth: 1.75,
+        worth: 1.5,
         category: REGULAR,
-        difficulty: COMPLETE
+        difficulty: COMPLETE,
+        effect: 'Secretly ask the narrator a yes/no question about one player. You secretly get a correct reply.',
+        notes: 'You can go to the narrator and ask, message them on their phone, etc.'
     },
     {
         name: "Mayor",
@@ -215,15 +278,27 @@ export const getRoles = () => [
         team: TOWNSFOLK,
         worth: 1.5,
         category: REGULAR,
-        difficulty: COMPLETE
+        difficulty: ADVANCED,
+        effect: 'At any point, reveal your card. From then on, your vote counts as 3 votes.',
+    },
+    {
+        name: "Dove of Peace",
+        nPlayers: 10,
+        team: TOWNSFOLK,
+        worth: 0.5,
+        category: REGULAR,
+        difficulty: COMPLETE,
+        effect: 'When you die, nobody can be hanged the upcoming day.',
     },
     {
         name: "Witch Hunter",
         nPlayers: 10,
         team: TOWNSFOLK,
-        worth: 1.25,
+        worth: 1,
         category: REGULAR,
-        difficulty: ADVANCED
+        difficulty: ADVANCED,
+        effect: "Once per game, declare you're a Witch Hunter and publicly pick a player. If the letter 'S' is in their role name, they die immediately.",
+        note: 'Note that other players can bluff as a Witch Hunter!'
     },
     {
         name: "Gangster",
@@ -231,7 +306,9 @@ export const getRoles = () => [
         team: TOWNSFOLK,
         worth: 1.25,
         category: REGULAR,
-        difficulty: COMPLETE
+        difficulty: COMPLETE,
+        effect: 'At any point in the game, reveal your card. From then on, you can veto any vote.',
+        notes: "It won't matter what the vote is. Only your vote will matter."
     },
     {
         name: "Thief",
@@ -239,7 +316,9 @@ export const getRoles = () => [
         team: TOWNSFOLK,
         worth: 1,
         category: REGULAR,
-        difficulty: ADVANCED
+        difficulty: ADVANCED,
+        effect: 'At any point in the game, reveal your card and pick another player. You each get a new non-Nightly, non-Setup role.',
+        notes: 'The narrator gives you the role. It could be a Strigoy!'
     },
     {
         name: "Crusader",
@@ -247,7 +326,9 @@ export const getRoles = () => [
         team: TOWNSFOLK,
         worth: 0.75,
         category: REGULAR,
-        difficulty: INTERMEDIATE
+        difficulty: INTERMEDIATE,
+        effect: "If you are hanged, reveal your card.\nYou don't die.\nThe person who argued most to hang you dies instead.",
+        notes: 'Up to the narrator who that person is.'
     },
     {
         name: "Scapegoat",
@@ -255,7 +336,9 @@ export const getRoles = () => [
         team: TOWNSFOLK,
         worth: 2,
         category: REGULAR,
-        difficulty: ADVANCED
+        difficulty: ADVANCED,
+        effect: "If at least 1 of your 2 neighbors if alive, you can't be eaten at night (nothing happens if you're eaten).",
+        notes: "The night may pass with no one being eaten."
     },
     {
         name: "Wrestler",
@@ -263,23 +346,28 @@ export const getRoles = () => [
         team: TOWNSFOLK,
         worth: 2,
         category: REGULAR,
-        difficulty: BEGINNER
+        difficulty: BEGINNER,
+        effect: "If there are 5 or more players in the game, you can't be eaten at night (nothing happens if you're eaten)",
+        notes: "The night may pass with no one being eaten."
     },
     {
         name: "Cat",
         nPlayers: 10,
         team: TOWNSFOLK,
-        worth: 2,
+        worth: 1.75,
         category: REGULAR,
-        difficulty: BEGINNER
+        difficulty: BEGINNER,
+        effect: 'You have 2 lives. If you die, you come back to life in the morning. You might not know it happened.',
+        notes: "The narrator might announce 'nobody died' or 'you are back in the game'."
     },
     {
-        name: "Celebrity",
+        name: "Bard",
         nPlayers: 10,
         team: TOWNSFOLK,
         worth: 1.75,
         category: REGULAR,
-        difficulty: COMPLETE
+        difficulty: COMPLETE,
+        effect: 'When you die, reveal your card. You come back to life with a new random role card.'
     },
     {
         name: "Archaeologist",
@@ -287,7 +375,9 @@ export const getRoles = () => [
         team: TOWNSFOLK,
         worth: 1,
         category: REGULAR,
-        difficulty: COMPLETE
+        difficulty: COMPLETE,
+        effect: 'If you win and you are alive, all alive Townsfolk get 50% more points (if playing with points).',
+        notes: 'Rounded down. If not playing with points, you\'re just a peasant.'
     },
     {
         name: "Fool",
@@ -295,7 +385,9 @@ export const getRoles = () => [
         team: TOWNSFOLK,
         worth: 0.75,
         category: REGULAR,
-        difficulty: COMPLETE
+        difficulty: COMPLETE,
+        effect: "You are immune to other Townsfolks' abilities. If they would get information about you, it might be wrong information.",
+        notes: "You can still be hanged or eaten."
     },
     {
         name: "Sad Poet",
@@ -303,7 +395,9 @@ export const getRoles = () => [
         team: TOWNSFOLK,
         worth: 1,
         category: REGULAR,
-        difficulty: INTERMEDIATE
+        difficulty: INTERMEDIATE,
+        effect: "In the morning, if someone died last night, you can reveal your card and die. That person comes back to life.",
+        notes: "You choose who if multiple people died."
     },
     {
         name: "Saint",
@@ -311,7 +405,8 @@ export const getRoles = () => [
         team: TOWNSFOLK,
         worth: 0.75,
         category: REGULAR,
-        difficulty: BEGINNER
+        difficulty: BEGINNER,
+        effect: "If you are killed at DAY, reveal your card. The Strigoys win immediately."
     },
     {
         name: "Star Child",
@@ -319,7 +414,8 @@ export const getRoles = () => [
         team: TOWNSFOLK,
         worth: 2,
         category: REGULAR,
-        difficulty: ADVANCED
+        difficulty: ADVANCED,
+        effect: 'If you are eaten at night, a random non-Strigoy Evil player also dies (if any was still alive).'
     },
     {
         name: "Hunter",
@@ -327,7 +423,8 @@ export const getRoles = () => [
         team: TOWNSFOLK,
         worth: 1.25,
         category: REGULAR,
-        difficulty: BEGINNER
+        difficulty: BEGINNER,
+        effect: "When you die, reveal your card and pick a player. That player also dies."
     },
     {
         name: "Skinny Kid",
@@ -335,15 +432,17 @@ export const getRoles = () => [
         team: TOWNSFOLK,
         worth: 0.5,
         category: REGULAR,
-        difficulty: BEGINNER
+        difficulty: BEGINNER,
+        effect: "If you are eaten, reveal your card. Next night, the Strigoys kill 2 players."
     },
     {
-        name: "Granny",
+        name: "Grandma",
         nPlayers: 0,
         team: TOWNSFOLK,
         worth: 0.25,
         category: REGULAR,
-        difficulty: ADVANCED
+        difficulty: ADVANCED,
+        effect: 'If you are eaten, you become a Strigoy. The narrator will announce that "Grandma was eaten and became a Strigoy".'
     },
     {
         name: "Madman",
@@ -351,7 +450,8 @@ export const getRoles = () => [
         team: OTHER,
         worth: 0.5,
         category: REGULAR,
-        difficulty: ADVANCED
+        difficulty: ADVANCED,
+        effect: "You aren't on any team. You win if you are hanged. Then the game goes on."
     },
     
     {
@@ -360,15 +460,27 @@ export const getRoles = () => [
         team: OTHER,
         worth: 0.5,
         category: REGULAR,
-        difficulty: COMPLETE
+        difficulty: COMPLETE,
+        effect: "You aren't on any team. You win if you are eaten. Then the game goes on."
     },
     {
         name: "Diva",
         nPlayers: 9,
-        team: OTHER,
-        worth: 1,
+        team: TOWNSFOLK,
+        worth: 0.75,
         category: REGULAR,
-        difficulty: ADVANCED
+        difficulty: ADVANCED,
+        effect: "If you would die at night, a random Townsfolk dies instead. If you are hanged, both you and another random Townsfolk die."
+    },
+    {
+        name: "Hobo",
+        nPlayers: 9,
+        team: TOWNSFOLK,
+        worth: 0.5,
+        category: REGULAR,
+        difficulty: ADVANCED,
+        effect: "If you die, reveal your card. The next Night happens TWICE.",
+        notes: "There will be 2 nights in a row, without everyone waking up in between."
     },
 
     {...Peasant},
@@ -377,6 +489,12 @@ export const getRoles = () => [
 
 export function getRolesByDifficulty(difficulty) {
     return getRoles().filter(role => role.difficulty <= difficulty)
+}
+export function getTestRoles() {
+    return getRoles().filter(role => randomOf(true, false)).map(role => ({
+        ...role,
+        isInGame: randomOf(true, false)
+    }))
 }
 
 export function printRolesByDifficulty() {
@@ -387,19 +505,20 @@ export function printRolesByDifficulty() {
     console.log({rolesADVANCED: roles.filter(role => role.difficulty == ADVANCED)})
     console.log({rolesCOMPLETE: roles.filter(role => role.difficulty == COMPLETE)})
 }
+// printRolesByDifficulty()
 
 export const NO_PRIORITY = 99
 const setupOrder = [
     'Philosopher',
     'Exorcist',
-    'Copycat',
 
-    'Alpha',
-    'Werewolf',
+    'Mora',
+    'Strigoy',
 
     'Blind Inspector',
     'Fortune Teller',
-    'Rival'
+    'Rival A',
+    'Rival B',
 ]
 export function getSetupRolePriority(roleOrRoleName) {
     let roleName = roleOrRoleName.name != null? roleOrRoleName.name : roleOrRoleName
@@ -412,21 +531,45 @@ export function getSetupRolePriority(roleOrRoleName) {
     }
     return index
 }
+const normalOrder = [
+    'Mora',
+    'Strigoy',
+    'Cultist',
+    'Hazer',
+    'Silencer',
+    'Yaga (Priest)',
+    'Yaga (Town Guard)',
+    'Peasant'
+]
+export function getNormalRolePriority(roleOrRoleName) {
+    let roleName = roleOrRoleName.name != null? roleOrRoleName.name : roleOrRoleName
+    const index = normalOrder.indexOf(roleName)
+    if (index == -1) {
+        return NO_PRIORITY
+    }
+    return index
+}
 
 const nightlyOrder = [
-    'Werewolf',
-    'Secondary Werewolf',
+    'Strigoy',
+    'Secondary Strigoy',
+    'Bitten',
+    'Bell Ringer',
     'Town Guard',
+    'Yaga (Town Guard)',
+    'Seer',
     'Assassin',
-    'Priest'
+    'Schizophrenic',
+    'Priest',
+    'Yaga (Priest)'
 ]
 export function getNightlyRolePriority(roleOrRoleName) {
     let roleName = roleOrRoleName.name != null? roleOrRoleName.name : roleOrRoleName
-    if (roleName == 'Alpha') {
-        roleName = 'Werewolf'
+    if (roleName == 'Mora') {
+        roleName = 'Strigoy'
     }
     if (roleName == 'Hazer' || roleName == 'Silencer') {
-        roleName = 'Secondary Werewolf'
+        roleName = 'Secondary Strigoy'
     }
     const index = nightlyOrder.indexOf(roleName)
     if (index == -1) {
@@ -442,19 +585,15 @@ export function getRole(name) {
 }
 
 
-
-// TODO: I don't like the algorithm
-// There should be a set number of evils every game
-// Have a set number of Werewolves + Evils per players, then calculate villagers only by the villagers worth
-// ALSO -- I deleted duplicates from the roles list
 export function setupRoles(nPlayers, difficulty) {
-    const baseGoodRoles = getRoles().filter(role => role.difficulty <= difficulty && role.team != WEREWOLVES && role.isSpecial != true)
-    times(3, () => {
-        baseGoodRoles.push(getRole('Peasant'))      // Add 3 extra Peasants
-    })
-    while (baseGoodRoles.length < nPlayers + 3) {   // Pad with Peasants
+    const baseGoodRoles = getRoles().filter(role => role.difficulty <= difficulty && role.team != WEREWOLVES)
+    while (baseGoodRoles.length < nPlayers) {   // Pad with Peasants
         baseGoodRoles.push(getRole('Peasant'))
     }
+    times(10, () => {
+        baseGoodRoles.push(getRole('Peasant'))       // Add 3 extra Peasants
+    })
+
     const goodRoles = randomizeArray(baseGoodRoles) 
     const evilRoles = randomizeArray(getRoles().filter(role => role.difficulty <= difficulty && role.team == WEREWOLVES && role.isWerewolf != true))
 
@@ -469,24 +608,30 @@ export function setupRoles(nPlayers, difficulty) {
     }
     
     times(nWerewolvesThisGame, () => {
-        rolesSoFar.push(getRole('Werewolf'))
+        rolesSoFar.push(getRole('Strigoy'))
     })
     times(nNonWerewolfEvilsThisGame, () => {
         rolesSoFar.push(evilRoles.pop())
     })
     
+    // Fix yaga
+    const getWorthBalanceSoFar = () => sum(rolesSoFar.map(role => role.worth))
+    const yaga = rolesSoFar.find(role => role.name.includes('Yaga'))
+    const isYagaInGame = yaga != null
+    if (isYagaInGame) {
+        popArrayElementFind(baseGoodRoles, role => role.name == yaga.yagaRole)
+    }
+
 
     // Second, add townsfolk
     while (rolesSoFar.length < nPlayers) {
         rolesSoFar.push(goodRoles.pop())
     }
 
-    const getWorthBalanceSoFar = () => sum(rolesSoFar.map(role => role.worth))
-
-
     // Third, balance it
+    let nIterations = 0
     function popTownsfolkMatchingCondition(conditionRoleToBool) {
-        const townsfolksMatching = rolesSoFar.filter(role => role.team != WEREWOLF && conditionRoleToBool(role))
+        const townsfolksMatching = rolesSoFar.filter(role => role.team != WEREWOLVES && conditionRoleToBool(role))
         if (townsfolksMatching.length == 0)
             return null
         const chosenTownsfolk = randomOf(...townsfolksMatching)
@@ -497,126 +642,56 @@ export function setupRoles(nPlayers, difficulty) {
         if (unusedTownsfolks.length == 0)
             return null
         const chosenNewTownsfolk = randomOf(...unusedTownsfolks)
-        popArrayElementFind(goodRoles, role => role.name == chosenNewTownsfolk.name)
+        const roleFound = popArrayElementFind(goodRoles, role => role.name == chosenNewTownsfolk.name)
         rolesSoFar.push(chosenNewTownsfolk)
+        return roleFound
     }
     function replaceWeakTownsfolkWithStronger() {
-        const removedTownsfolk = popTownsfolkMatchingCondition(role => role.worth <= 1)
+        let removedTownsfolk = popTownsfolkMatchingCondition(role => role.name == 'Peasant')
+        if (removedTownsfolk == null) {
+            removedTownsfolk = popTownsfolkMatchingCondition(role => role.worth <= 1)
+        }
         if (removedTownsfolk == null)
-            return
-        moveGoodTownsfolkMatchingConditionToRolesSoFar(role => role.worth >= removedTownsfolk.worth)
+            removedTownsfolk = popTownsfolkMatchingCondition(role => true)  // Pop any townsfolk
+        const pushedTownsfolk = moveGoodTownsfolkMatchingConditionToRolesSoFar(role => role.worth >= removedTownsfolk.worth)
+        if (pushedTownsfolk == null) {
+            rolesSoFar.push(removedTownsfolk)   // Put it back
+        } else {
+        }
     }
     function replaceStrongTownsfolkWithWeaker() {
-        const removedTownsfolk = popTownsfolkMatchingCondition(role => role.worth >= 1)
+        let removedTownsfolk = popTownsfolkMatchingCondition(role => role.worth >= 1)
         if (removedTownsfolk == null)
-            return
-        moveGoodTownsfolkMatchingConditionToRolesSoFar(role => role.worth <= removedTownsfolk.worth)
-    }
+            removedTownsfolk = popTownsfolkMatchingCondition(role => true)  // Pop any townsfolk
+        const pushedTownsfolk = moveGoodTownsfolkMatchingConditionToRolesSoFar(role => role.worth <= removedTownsfolk.worth)
+        if (pushedTownsfolk == null) {
+            rolesSoFar.push(removedTownsfolk)   // Put it back
+        } else {
 
-    while (Math.abs(getWorthBalanceSoFar()) >= 0.75) {
+        }
+    }
+    
+    const maxIterations = 20
+    while (!isWorthBalanceAcceptable(getWorthBalanceSoFar()) && nIterations < maxIterations) {
         const areTownsfolkTooWeak = getWorthBalanceSoFar() < 0
         if (areTownsfolkTooWeak) {
             replaceWeakTownsfolkWithStronger()
         } else {
             replaceStrongTownsfolkWithWeaker()
         }
+        randomizeArray(rolesSoFar)
+        nIterations++
     }
     
-    console.log(`For ${nPlayers} people, difficulty ${difficulty}, worth balance is: ${getWorthBalanceSoFar()}`)
+    console.log(`For ${nPlayers} people, difficulty ${difficulty}, worth balance is: ${getWorthBalanceSoFar()} (did ${nIterations} iterations)`)
     console.log(rolesSoFar)
-}
 
-export function setupRolesOLD(nPlayers, difficulty) {
-    let goodRoles = randomizeArray(getRoles().filter(role => role.difficulty <= difficulty && role.team != WEREWOLVES))
-    let evilRoles = randomizeArray(getRoles().filter(role => role.difficulty <= difficulty && role.team == WEREWOLVES && role.name != 'Werewolf' && role.name != 'Alpha'))
-
-    let rolesSoFar = []
-
-    // First, assume the baseline of 3:1 Townsfolk:Werewolves ratio
-    const nBaselineWerewolves = getMinimumNWerewolves(nPlayers)
-    times(nBaselineWerewolves, () => {
-        rolesSoFar.push(getRole('Werewolf'))
-    })
-    while (rolesSoFar.length < nPlayers) {
-        const randomGoodRole = goodRoles.shift()
-        rolesSoFar.push(randomGoodRole)
+    // Fourth, rectifications
+    const minimumAcceptableImportantRoles = Math.floor(nPlayers / 7)
+    const importantRolesSoFar = rolesSoFar.filter(role => role.isImportant)
+    if (importantRolesSoFar.length < minimumAcceptableImportantRoles) {
+        return setupRoles(nPlayers, difficulty)
     }
 
-    console.log({rolesSoFar})
-
-    // Secondly, try to balance roles
-    const getWorthBalanceSoFar = () => sum(rolesSoFar.map(role => role.worth))
-    function popWeakestTownsfolkSoFar() {
-        const nonWerewolvesSoFar = rolesSoFar.filter(role => role.team != WEREWOLVES)
-        console.log({nonWerewolvesSoFar})
-        const weakestRoleSoFar = arrayFindLowest(nonWerewolvesSoFar, role => role.worth)
-        console.log({weakestRoleSoFar})
-        const weakestRole = popArrayElementFind(rolesSoFar, role => role.name == weakestRoleSoFar.name)
-        return weakestRole
-    }
-    function popStrongestTownsfolkSoFar() {
-        const nonWerewolvesSoFar = rolesSoFar.filter(role => role.team != WEREWOLVES)
-        const strongestRoleSoFar = arrayFindHighest(nonWerewolvesSoFar, role => role.worth)
-        const strongestRole = popArrayElementFind(rolesSoFar, role => role.name == strongestRoleSoFar.name)
-        return strongestRole
-    }
-    function replaceWerewolfWithWeakerEvil() {
-        const removedWerewolf = popArrayElementFind(rolesSoFar, role => role.isWerewolf)
-        const newEvil = evilRoles.shift()
-        rolesSoFar.push(newEvil)
-    }
-    function replaceWeakestTownsfolkWithStronger() {
-        const weakestRole = popWeakestTownsfolkSoFar()
-        randomizeArray(goodRoles)
-        goodRoles.push(weakestRole)
-        
-        rolesSoFar.push(goodRoles.shift())
-    }
-    function replaceWeakestTownsfolkWithEvil() {
-        const weakestRole = popWeakestTownsfolkSoFar()
-        randomizeArray(goodRoles)
-        goodRoles.push(weakestRole)
-
-        if (percentChance(75) && evilRoles.length > 0) {
-            rolesSoFar.push(evilRoles.shift())
-        } else {
-            rolesSoFar.push(getRole('Werewolf'))
-        }
-    }
-    function replaceStrongestTownsfolkWithWeaker() {
-        const strongestRole = popStrongestTownsfolkSoFar()
-        randomizeArray(goodRoles)
-        goodRoles.push(strongestRole)
-
-        rolesSoFar.push(goodRoles.shift())
-    }
-
-    let nChanges = 0
-    while (Math.abs(getWorthBalanceSoFar()) >= 1) {
-        const areVillagersTooWeak = getWorthBalanceSoFar() < 0
-        const areWerewolvesTooWeak = getWorthBalanceSoFar() > 0
-        if (areVillagersTooWeak) {
-            const areThereEnoughWerewolvesToRemoveOne = rolesSoFar.filter(role => role.isWerewolf).length >= getMinimumNWerewolves(nPlayers)
-            if (areThereEnoughWerewolvesToRemoveOne && percentChance(75)) {  // Replace werewolf with different weaker role
-                replaceWerewolfWithWeakerEvil()
-            } else {
-                replaceWeakestTownsfolkWithStronger()
-            }
-        }
-        if (areWerewolvesTooWeak) {
-            if (percentChance(50)) {
-                replaceWeakestTownsfolkWithEvil()
-            } else {
-                replaceStrongestTownsfolkWithWeaker()
-            }
-        }
-        nChanges += 1
-    }
-
-    console.log({
-        nChanges,
-        rolesSoFar: rolesSoFar.sort((a, b) => a.worth - b.worth),
-        balance: getWorthBalanceSoFar()
-    })
-    
+    return rolesSoFar
 }

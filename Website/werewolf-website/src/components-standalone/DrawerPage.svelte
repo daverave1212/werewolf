@@ -43,7 +43,7 @@
         top: 0;
         left: calc(-1 * var(--width));
         
-        z-index: 99990 !important;
+        z-index: 484 !important;
 
         transition: 0.5s;
         
@@ -59,17 +59,18 @@
 </style>
 
 <script>
+    import { createEventDispatcher } from "svelte";
+
 
     export let isOpen
-    export let setIsOpen
+    export let zIndex
+    
     let state = 'CLOSED'
     
     $: {
         if (isOpen) {
             state = 'OPEN'
-            console.log('Setting state to open')
         } else {
-            console.log('Closing')
             state = 'CLOSING'
             setTimeout(() => {
                 state = 'CLOSED'
@@ -88,16 +89,16 @@
         state == 'OPEN' ? 'side-menu side-menu--open': 
         'side-menu'
 
-    function closeSideMenu() {
-        setIsOpen(false)
-    }
+    $: style = zIndex == null? '' : `z-index: ${zIndex}`
+
+    const dispatch = createEventDispatcher()
 
 </script>
 
 <!-- svelte-ignore missing-declaration -->
-<div class="{sideMenuWrapperClass}" on:click={closeSideMenu}>
+<div class="{sideMenuWrapperClass}" style={style}>
     <div class="{blackOverlayClass}"></div>
-    <div class="{sideMenuClass}" on:click={evt => evt.stopPropagation()}>
+    <div class="{sideMenuClass}" on:click={evt => {evt.stopPropagation(); dispatch('click')}}>
         <slot></slot>
     </div>
 </div>

@@ -1,21 +1,6 @@
 
 <style>
-    .add-contact-button {
-        background-color: white;
-        border: none;
-        padding: 0px;
-
-        width: 100%;
-        height: calc(var(--contact-header-height) * 1.5);
-        
-        display: block;
-        justify-content: center;
-        flex-direction: column;
-        text-align: center;
-
-        color: gray;
-        font-size: 1.5rem;
-    }
+    
 </style>
 
 <script>
